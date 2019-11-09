@@ -2,9 +2,9 @@ const knex = require('./knex');
 
 module.exports = {
     getAll(){
-        return knex('sneakers')
+        return knex('sneaker')
     },
     getOne(id){
-        return knex('sneakers').where('id', id).first()
+        return knex('sneaker').where('id', id).first()
     }
 }

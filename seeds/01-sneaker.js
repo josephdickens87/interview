@@ -1,11 +1,11 @@
-const sneakers = require('../sneakers')
+const sneaker = require('../sneakers')
 
 
 exports.seed = function(knex) {
   // Deletes ALL existing entries
-  return knex('sneakers').del()
+  return knex('sneaker').del()
     .then(function () {
       // Inserts seed entries
-      return knex('sneakers').insert(sneakers);
+      return knex('sneaker').insert(sneaker);
     });
 };
