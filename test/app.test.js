@@ -1,10 +1,10 @@
-const knex = require('../db/knex')
+const knex = require('../db/knex');
 
-describe('CRUD Sneakers', () => {
+describe('derp', () => {
     before(() => {
         knex.migrate.latest()
-            .then(()=> {
-                return knex.seed.run()
+            .then(() => {
+                return knex.seed.run();
             })
     })
 })
