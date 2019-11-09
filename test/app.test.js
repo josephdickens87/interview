@@ -20,7 +20,7 @@ describe('derp', () => {
             .expect(200)
             .then((response) => {
                 expect(response.body).to.be.a('array');
-                expect(response.body).to.deep.equal(fixtures.stickers);
+                expect(response.body).to.deep.equal(fixtures.sneakers);
                 done();
             })
     })
