@@ -5,6 +5,6 @@ module.exports = {
         return knex('fit').insert(fit, '*')
     },
     avgFit(id){
-        return knex('fit').avg('fit').where('sneaker_id', id)
+        return knex('fit').avg('fit').where('sneaker_id', id).first()
     }
 }

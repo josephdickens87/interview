@@ -2,7 +2,7 @@ const knex = require('../db/knex');
 const request = require('supertest');
 const app = require('../app');
 const expect = require('chai').expect;
-const fixtures = require('./fixtures')
+const fixtures = require('./sneaker-fixtures')
 const faker = require('faker')
 
 describe('creates, reads and updates sneakers', () => {
@@ -124,16 +124,42 @@ describe('fitment ratings', () => {
             })
     })
 
-    it.only('returns a sneakers avg rated fit', (done) => {
+    it('returns a sneakers current avg rated fit', (done) => {
+        const fitStub  = {
+            "sneaker_id": fixtures.sneakers[1].id,
+            "fit": 3
+        }
         request(app)
             .get('/api/fit/2')
             .set('Accept', 'application/json')
             .expect('Content-type', /json/)
             .expect(200)
             .then((response) => {
-                expect(response.body).to.be.a('array');
-                // expect(response.body).to.deep.equal(fixtures.sneakers[1]);
-                done();
+                expect(response.body).to.be.a('object');
+                expect(response.body.avg).to.equal("2.7000000000000000");
+            })
+        request(app)
+            .post('/api/fit')
+            .send(fitStub)
+            .set('Accept', 'application/json')
+            .expect('Content-type', /json/)
+            .expect(200)
+            .then((response) => {
+                expect(response.body).to.be.a('object');
+                expect(response.body.sneaker_id).to.equal(fitStub.sneaker_id);
+                expect(response.body.sneaker_name).to.equal(fitStub.sneaker_name);
+                expect(response.body.fit).to.equal(fitStub.fit);
+            })
+            request(app)
+            .get('/api/fit/2')
+            .set('Accept', 'application/json')
+            .expect('Content-type', /json/)
+            .expect(200)
+            .then((response) => {
+                expect(response.body).to.be.a('object');
+                expect(response.body.avg).to.equal("2.7272727272727273");
+                done()
             })
     })
+
 })
