@@ -60,7 +60,10 @@ describe('creates, reads and updates sneakers', () => {
             })
     })
     it('updates a sneaker', (done) => {
-        fixtures.sneakers.price = 800
+        fixtures.sneaker.name = faker.commerce.productName()
+        fixtures.sneaker.color = faker.commerce.color()
+        fixtures.sneaker.color = faker.commerce.price()
+
         request(app)
             .put('/api/sneakers/1')
             .send(fixtures.sneaker)
@@ -69,9 +72,9 @@ describe('creates, reads and updates sneakers', () => {
             .expect(200)
             .then((response) => {
                 expect(response.body).to.be.a('object');
-                expect(response.body.id).to.equal(fixtures.sneaker.id);
+                expect(response.body.name).to.equal(fixtures.sneaker.name);
                 expect(response.body.color).to.equal(fixtures.sneaker.color);
-                expect(response.body.price).to.equal(fixtures.sneaker.price.toString());
+                expect(response.body.price).to.equal(fixtures.sneaker.price.toString() + '.00');
                 done();
             })
     })
@@ -92,7 +95,7 @@ describe('creates, reads and updates sneakers', () => {
     })
 })
 
-describe('derps', () => {
+describe('fitment ratings', () => {
     before((done) => {
         knex.migrate.latest()
             .then(() => {
@@ -103,7 +106,6 @@ describe('derps', () => {
     it('adds a fit', (done) => {
         const fitStub  = {
             "sneaker_id": fixtures.sneakers[0].id,
-            "sneaker_name": fixtures.sneakers[0].name,
             "fit": 3
         }
 
@@ -118,6 +120,19 @@ describe('derps', () => {
                 expect(response.body.sneaker_id).to.equal(fitStub.sneaker_id);
                 expect(response.body.sneaker_name).to.equal(fitStub.sneaker_name);
                 expect(response.body.fit).to.equal(fitStub.fit);
+                done();
+            })
+    })
+
+    it.only('returns a sneakers avg rated fit', (done) => {
+        request(app)
+            .get('/api/fit/2')
+            .set('Accept', 'application/json')
+            .expect('Content-type', /json/)
+            .expect(200)
+            .then((response) => {
+                expect(response.body).to.be.a('array');
+                // expect(response.body).to.deep.equal(fixtures.sneakers[1]);
                 done();
             })
     })

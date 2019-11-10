@@ -7,10 +7,9 @@ const sneakers = [
 
 const sneaker =
   {
-    "id": faker.random.number(),
-    "name": faker.commerce.productName(),
-    "color": faker.commerce.color(),
-    "price": 99.99
+    "name": "newName",
+    "color": "red",
+    "price": 600.00
   };
 
 module.exports = {

@@ -9,7 +9,6 @@ exports.up = function(knex, Promise) {
     })
     .createTable('fit', function(fit) {
       fit.integer('sneaker_id').references('id').inTable('sneaker').notNull().onDelete('cascade');
-      fit.text('sneaker_name').references('name').inTable('sneaker').notNull().onDelete('cascade');
       fit.integer('fit').notNull();
     });
   };
