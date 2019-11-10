@@ -7,17 +7,19 @@ function isValidId(req, res, next){
     next(new Error('invalid ID'))
 }
 
-// function validSneaker(sneaker){
-//     const hasName = typeof sneaker.name == 'string' && sneaker.name.trim() != '';
-//     const hasColor = typeof sneaker.color == 'string' && sneaker.color.trim() != '';
-//     const hasPrice = typeof sneaker.price == 'number' && sneaker.price != null;
-//     return hasName && hasColor && hasPrice;
-// }
+function isValidFit(fit){
+    const fitIsValid = typeof fit.fit == 'number' && fit.fit != null && (fit.fit > 0 && fit.fit < 6)
+    return fitIsValid
+}
 
 router.post('/', (req, res, next) => {
-    queries.create(req.body).then(fit => {
-        res.json(fit[0])
-    })
+    if(isValidFit(req.body)){
+        queries.create(req.body).then(fit => {
+            res.json(fit[0])
+        })
+    }else {
+        next(new Error('Invalid Fit'))
+    }
 })
 
 router.get('/:id', isValidId, (req, res, next) => {
