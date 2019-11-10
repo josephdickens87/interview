@@ -91,3 +91,34 @@ describe('creates, reads and updates sneakers', () => {
             })
     })
 })
+
+describe('derps', () => {
+    before((done) => {
+        knex.migrate.latest()
+            .then(() => {
+                return knex.seed.run();
+            }).then(() => done());
+    })
+
+    it('adds a fit', (done) => {
+        const fitStub  = {
+            "sneaker_id": fixtures.sneakers[0].id,
+            "sneaker_name": fixtures.sneakers[0].name,
+            "fit": 3
+        }
+
+        request(app)
+            .post('/api/fit')
+            .send(fitStub)
+            .set('Accept', 'application/json')
+            .expect('Content-type', /json/)
+            .expect(200)
+            .then((response) => {
+                expect(response.body).to.be.a('object');
+                expect(response.body.sneaker_id).to.equal(fitStub.sneaker_id);
+                expect(response.body.sneaker_name).to.equal(fitStub.sneaker_name);
+                expect(response.body.fit).to.equal(fitStub.fit);
+                done();
+            })
+    })
+})
