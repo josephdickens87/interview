@@ -38,6 +38,18 @@ router.post('/', (req, res, next) => {
     }else{
         next(new Error('Invalid Sneaker'))
     }
+
+})
+
+router.put('/:id', isValidId, (req, res, next) => {
+    if(validSneaker(req.body)){
+        queries.update(req.params.id, req.body).then(sneaker => {
+            res.json(sneaker[0])
+        })
+    }else{
+        next(new Error('Invalid Sneaker'))
+    }
+
 })
 
 module.exports = router

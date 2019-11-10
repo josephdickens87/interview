@@ -5,7 +5,7 @@ const expect = require('chai').expect;
 const fixtures = require('./fixtures')
 const faker = require('faker')
 
-describe('derp', () => {
+describe('creates, reads and updates sneakers', () => {
     before((done) => {
         knex.migrate.latest()
             .then(() => {
@@ -37,7 +37,7 @@ describe('derp', () => {
                 done();
             })
     })
-    it('lists creates a sneaker', (done) => {
+    it('creates a sneaker', (done) => {
         const sneakerStub  = {
             "id": faker.random.number(),
             "name": faker.commerce.productName(),
@@ -56,6 +56,22 @@ describe('derp', () => {
                 expect(response.body.id).to.equal(sneakerStub.id);
                 expect(response.body.color).to.equal(sneakerStub.color);
                 expect(response.body.price).to.equal(sneakerStub.price.toString());
+                done();
+            })
+    })
+    it('updates a sneaker', (done) => {
+        fixtures.sneakers.price = 800
+        request(app)
+            .put('/api/sneakers/1')
+            .send(fixtures.sneaker)
+            .set('Accept', 'application/json')
+            .expect('Content-type', /json/)
+            .expect(200)
+            .then((response) => {
+                expect(response.body).to.be.a('object');
+                expect(response.body.id).to.equal(fixtures.sneaker.id);
+                expect(response.body.color).to.equal(fixtures.sneaker.color);
+                expect(response.body.price).to.equal(fixtures.sneaker.price.toString());
                 done();
             })
     })

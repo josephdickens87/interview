@@ -9,5 +9,8 @@ module.exports = {
     },
     create(sneaker){
         return knex('sneaker').insert(sneaker, '*')
+    },
+    update(id, sneaker){
+        return knex('sneaker').where('id', id).update(sneaker, '*')
     }
 }
