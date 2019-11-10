@@ -12,5 +12,8 @@ module.exports = {
     },
     update(id, sneaker){
         return knex('sneaker').where('id', id).update(sneaker, '*')
+    },
+    delete(id){
+        return knex('sneaker').where('id', id).del()
     }
 }

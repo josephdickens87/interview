@@ -52,4 +52,12 @@ router.put('/:id', isValidId, (req, res, next) => {
 
 })
 
+router.delete('/:id', isValidId, (req, res) => {
+    queries.delete(req.params.id).then(sneaker => {
+        res.json({
+            deleted: true
+        })
+    })
+})
+
 module.exports = router

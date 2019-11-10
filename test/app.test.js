@@ -75,4 +75,19 @@ describe('creates, reads and updates sneakers', () => {
                 done();
             })
     })
+
+    it('deletes a sneaker by id', (done) => {
+        request(app)
+            .delete('/api/sneakers/2')
+            .set('Accept', 'application/json')
+            .expect('Content-type', /json/)
+            .expect(200)
+            .then((response) => {
+                expect(response.body).to.be.a('object');
+                expect(response.body).to.deep.equal({
+                    deleted: true
+                });
+                done();
+            })
+    })
 })
