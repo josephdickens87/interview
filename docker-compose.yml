@@ -1,47 +1,33 @@
 version: '2'
 services:
   postgres:
-    image: postgres
+    image: postgres:alpine
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: app
       POSTGRES_DB: db
-    volumes:
-      - .:/interview
-    ports:
-      - '5432:5432'
+
+  postgres-test:
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: app
+      POSTGRES_DB: db-test
 
   app:
-    image: interview
+    build: .
     depends_on:
-      - postgres
+      - "postgres"
+      - "postgres-test"
+    links:
+      - "postgres"
+      - "postgres-test"
     environment:
-      DATABASE_URL: postgres://user:pass@postgres:5432/db
-      NODE_ENV: development
-      PORT: 3000
+      DB_PASSWORD: 'password'
+      DB_USER: 'app'
+      DB_NAME: 'db'
+      DB_HOST: 'postgres'
+      PORT: 8080
     ports:
-      - '3000:3000'
-    command: npm run dev
-    volumes:
-      - .:/app/
-      - /app/node_modules
-
-
-# service:
-#   pg:
-#     image: postgres
-#     enviornment:
-#       # POSTGRES_USER: postgres
-#       # POSTGRES_PASSWORD: postgres
-#       # POSTGRES_DB: interview
-#     volumes:
-#       ./pgData:/var/lib/postgresql/data
-#     ports:
-#       - '5432:5432'
-
-#   node:
-#     image: interview
-#     depends_on:
-#       - pg
-#     ports:
-#       - '4000:4000'
+      - '8080:8080'
+    command: npm start

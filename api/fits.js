@@ -3,7 +3,7 @@ const router = express.Router()
 const queries = require('../db/fit-queries')
 
 function isValidId(req, res, next){
-    if(isNaN(req.params.id)) return next();
+    if(!isNaN(req.params.id)) return next();
     next(new Error('invalid ID'))
 }
 

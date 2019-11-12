@@ -150,7 +150,7 @@ describe('fitment ratings', () => {
                 expect(response.body.sneaker_name).to.equal(fitStub.sneaker_name);
                 expect(response.body.fit).to.equal(fitStub.fit);
             })
-            request(app)
+        request(app)
             .get('/api/fit/2')
             .set('Accept', 'application/json')
             .expect('Content-type', /json/)

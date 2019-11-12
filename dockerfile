@@ -1,14 +1,18 @@
-FROM node:12.13-alpine
+FROM node:12
+# Create app directory
+WORKDIR /usr/src/app
 
-WORKDIR /app
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
 
-COPY ./package.json .
-COPY ./package-lock.json .
+RUN npm ci --only=production
 
-RUN npm install
-
+# Bundle app source
 COPY . .
 
-EXPOSE 3000
+ENV PORT=8080
+EXPOSE 8080
 
-CMD npm start
+CMD [ "npm", "start" ]
